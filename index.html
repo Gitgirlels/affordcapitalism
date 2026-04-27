@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Can I Afford This? | Hours of Life Cost Calculator</title>
+
+<meta name="description" content="Use the Can I Afford This calculator to convert any purchase into hours of your life based on your hourly wage, tax, rent, food and weekly expenses.">
+
+<meta name="keywords" content="can I afford this, affordability calculator, hourly wage calculator, life cost calculator, purchase calculator, budget calculator, money calculator, spending calculator">
+
+<meta name="author" content="Can I Afford This">
+
+<link rel="canonical" href="https://gitgirlels.github.io/affordcapitalism/index.html/">
+
+<meta property="og:title" content="Can I Afford This? | Hours of Life Cost Calculator">
+<meta property="og:description" content="Convert any purchase into hours of your life. A simple black and white affordability calculator with brutal mode.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gitgirlels.github.io/affordcapitalism/index.html/">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Can I Afford This?">
+<meta name="twitter:description" content="Find out how many hours of your life a purchase really costs.">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 72px);
+      line-height: 0.95;
+      margin: 0 0 16px;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      color: #ccc;
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    .box {
+      border: 1px solid #fff;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input {
+      width: 100%;
+      background: #000;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 14px;
+      font-size: 24px;
+      margin-bottom: 18px;
+      outline: none;
+    }
+
+    input:focus {
+      background: #111;
+    }
+
+    button {
+      background: #fff;
+      color: #000;
+      border: 1px solid #fff;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    button.secondary {
+      background: #000;
+      color: #fff;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      font-size: clamp(32px, 7vw, 58px);
+      line-height: 1;
+      font-weight: bold;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+
+    .small {
+      color: #ccc;
+      line-height: 1.5;
+      margin-top: 16px;
+    }
+
+    .roast {
+      width: 100%;
+      text-align: left;
+      margin-top: 18px;
+      font-size: 24px;
+    }
+
+    .footer {
+      color: #888;
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 16px;
+        align-items: flex-start;
+      }
+
+      .box {
+        padding: 18px;
+      }
+
+      button {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>Can I Afford This?</h1>
+
+    <p class="subtitle">
+      Enter the item price and your hourly wage. Find out how many hours of your life it costs.
+    </p>
+
+    <section class="box">
+      <label for="price">Item price</label>
+      <input id="price" type="number" value="150" min="0" step="0.01">
+
+      <label for="wage">Hourly wage</label>
+      <input id="wage" type="number" value="22" min="0" step="0.01">
+
+      <button id="simpleBtn">Basic mode</button>
+      <button id="brutalBtn" class="secondary">After tax, rent, food and sadness</button>
+    </section>
+
+    <section id="brutalOptions" class="box hidden">
+      <label for="tax">Tax %</label>
+      <input id="tax" type="number" value="25" min="0" max="95">
+
+      <label for="rent">Weekly rent</label>
+      <input id="rent" type="number" value="480" min="0">
+
+      <label for="food">Weekly food</label>
+      <input id="food" type="number" value="140" min="0">
+
+      <label for="other">Other weekly costs</label>
+      <input id="other" type="number" value="80" min="0">
+    </section>
+
+    <section class="box">
+      <p id="result" class="result">
+        This costs 6.8 hours of your life.
+      </p>
+
+      <p id="explain" class="small">
+        Basic mode uses item price divided by hourly wage.
+      </p>
+
+      <button id="roastBtn" class="roast">
+        capitalism got you
+      </button>
+    </section>
+
+    <p class="footer">
+      Not financial advice. Just emotional mathematics.
+    </p>
+  </main>
+
+  <script>
+    const priceInput = document.getElementById("price");
+    const wageInput = document.getElementById("wage");
+    const taxInput = document.getElementById("tax");
+    const rentInput = document.getElementById("rent");
+    const foodInput = document.getElementById("food");
+    const otherInput = document.getElementById("other");
+
+    const result = document.getElementById("result");
+    const explain = document.getElementById("explain");
+
+    const simpleBtn = document.getElementById("simpleBtn");
+    const brutalBtn = document.getElementById("brutalBtn");
+    const brutalOptions = document.getElementById("brutalOptions");
+
+    const roastBtn = document.getElementById("roastBtn");
+
+    let mode = "simple";
+    let roastIndex = 0;
+
+    const roasts = [
+      "capitalism got you",
+      "your wallet is crying quietly",
+      "that cart is looking dangerous",
+      "girl math has left the building",
+      "your bank app just sighed",
+      "financially questionable, emotionally understandable",
+      "this is paid DLC for your life",
+      "add to cart, subtract from peace"
+    ];
+
+    function calculate() {
+      const price = Number(priceInput.value) || 0;
+      const wage = Number(wageInput.value) || 0;
+
+      if (wage <= 0) {
+        result.textContent = "Enter your hourly wage first.";
+        explain.textContent = "Hourly wage needs to be more than $0.";
+        return;
+      }
+
+      if (mode === "simple") {
+        const hours = price / wage;
+
+        result.textContent = `This costs ${hours.toFixed(1)} hours of your life.`;
+        explain.textContent = "Basic mode uses item price divided by hourly wage.";
+      } else {
+        const taxRate = Math.min(Math.max(Number(taxInput.value) || 0, 0), 95) / 100;
+        const rent = Number(rentInput.value) || 0;
+        const food = Number(foodInput.value) || 0;
+        const other = Number(otherInput.value) || 0;
+
+        const weeklyHours = 38;
+        const afterTaxWage = wage * (1 - taxRate);
+        const weeklyTakeHome = afterTaxWage * weeklyHours;
+        const weeklyLeftover = weeklyTakeHome - rent - food - other;
+        const realHourly = weeklyLeftover / weeklyHours;
+
+        if (realHourly <= 0) {
+          result.textContent = "Infinite hours. You cannot afford this.";
+          explain.textContent = "Your weekly costs are using all your estimated take-home pay.";
+          return;
+        }
+
+        const hours = price / realHourly;
+
+        result.textContent = `After tax, rent, food and sadness: ${hours.toFixed(1)} hours.`;
+        explain.textContent = `Estimated leftover after weekly costs: $${weeklyLeftover.toFixed(2)} per week.`;
+      }
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+
+      if (mode === "simple") {
+        brutalOptions.classList.add("hidden");
+        simpleBtn.classList.remove("secondary");
+        brutalBtn.classList.add("secondary");
+      } else {
+        brutalOptions.classList.remove("hidden");
+        simpleBtn.classList.add("secondary");
+        brutalBtn.classList.remove("secondary");
+      }
+
+      calculate();
+    }
+
+    function nextRoast() {
+      roastIndex = (roastIndex + 1) % roasts.length;
+      roastBtn.textContent = roasts[roastIndex];
+    }
+
+    [
+      priceInput,
+      wageInput,
+      taxInput,
+      rentInput,
+      foodInput,
+      otherInput
+    ].forEach(input => {
+      input.addEventListener("input", calculate);
+    });
+
+    simpleBtn.addEventListener("click", () => setMode("simple"));
+    brutalBtn.addEventListener("click", () => setMode("brutal"));
+    roastBtn.addEventListener("click", nextRoast);
+
+    calculate();
+  </script>
+</body>
+</html>
